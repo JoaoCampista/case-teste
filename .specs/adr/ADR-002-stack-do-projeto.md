@@ -3,7 +3,7 @@ id: ADR-002
 kind: adr
 title: Adotar TypeScript de ponta a ponta com Next.js, SQLite via Drizzle, Vitest e Biome
 parent: PROD-001
-version: 1.0.0
+version: 1.1.0
 status: accepted
 date: 2026-09-05
 deciders: [joao, ceia]
@@ -52,7 +52,7 @@ Adotamos, para todas as camadas:
 | Camada | Decisão |
 |---|---|
 | Linguagem | TypeScript 5.x em modo `strict`, sem `any` implícito |
-| Runtime | Node.js 22 LTS |
+| Runtime | Node.js 26.x (ver `## Revisões`, 2026-09-05: substitui a escolha original por Node 22 LTS) |
 | Framework | Next.js 15 (App Router), renderizando no servidor; formulários por Server Actions; um só projeto para servidor e navegador |
 | Persistência | SQLite através de `better-sqlite3`, com Drizzle ORM para esquema e consultas tipadas; migrações em SQL geradas por `drizzle-kit` |
 | Senhas | `scrypt` do módulo `node:crypto`, com sal por usuário e parâmetros em constante nomeada |
@@ -114,6 +114,8 @@ Adotamos, para todas as camadas:
     ali, ela está no lugar errado.
   - **Superfície de dependência muito maior que o mínimo.** Next, React, Drizzle e Biome trazem uma
     árvore de pacotes que não cabe em revisão humana. `npm audit` no CI é paliativo, não solução.
+  - **Sem garantia de LTS no runtime** (ver `## Revisões`): correções entram pela linha atual do
+    Node, e ficar para trás deixa de ser opção segura.
   - **Ficamos expostos à evolução do App Router**, cuja API mudou de forma incompatível mais de uma
     vez. Atualizar versão maior será trabalho de verdade, não `npm update`.
   - **SQLite escreve por um escritor de cada vez.** Serve o piloto com folga e nada mais. Crescer
@@ -215,6 +217,20 @@ sem execução não entra.
 
 ## Revisões
 
+- 2026-09-05: **runtime passa de Node 22 LTS para Node 26.x**, por decisão do dono do produto. Motivo
+  de contexto: a máquina de desenvolvimento não tem Node 22, e das versões disponíveis (26.8 alpha,
+  26.4 estável, 24.18 LTS) foi escolhida a 26.4. Consequência registrada honestamente: **abrimos mão
+  da garantia de LTS** — Node 26 não tem janela de suporte estendido, então correção de segurança
+  depende de acompanhar a linha atual, e atualizar deixa de ser opcional. Além disso, `better-sqlite3`
+  pode não ter binário pré-compilado para a ABI do Node 26, caindo em compilação a partir do fonte;
+  se isso inviabilizar a instalação, a alternativa é o `node:sqlite` da biblioteca padrão, e essa sim
+  seria troca de linha de persistência, exigindo ADR-002-v2. Rejeitadas: instalar Node 22 (a opção
+  que preservaria a decisão intacta) e usar o Node 24 LTS já presente.
+  **Leitura de §2 aplicada aqui, declarada para poder ser contestada:** tratamos isto como *revisão*
+  com bump `minor` do ADR e da Constitution, e não como ADR-002-v2 com bump `major`, porque a troca
+  ocorre ainda dentro do bootstrap, antes de existir uma linha de código sob a decisão original — não
+  há stack em vigor sendo substituída. Se o dono do produto preferir o tratamento formal de troca,
+  basta dizer, e o ADR-002-v2 é escrito.
 - 2026-09-05: aceito pelo dono do produto no gate G2. Passa a ser lei para código novo.
 - 2026-09-05: rascunho inicial propunha Python 3.12 + FastAPI + SQLite. Substituído antes de
   qualquer aceite, ainda em `in_review`, por decisão do dono do produto de usar TypeScript no

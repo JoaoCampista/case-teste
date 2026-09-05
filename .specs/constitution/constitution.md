@@ -3,13 +3,14 @@ id: CONST-001
 kind: constitution
 title: Constitution — camada de governança computável
 parent: none
-version: 1.1.0
+version: 1.2.0
 status: approved
 owners: [ceia]
 last_updated: 2026-09-05
 status_history:
   - { version: 1.0.0, status: approved, date: 2026-09-05, note: "adoção do método SDD (ADR-001); stack a definir no bootstrap" }
   - { version: 1.1.0, status: approved, date: 2026-09-05, note: "primeiro preenchimento de §2 (stack canônica) via ADR-002, aceito no gate G2" }
+  - { version: 1.2.0, status: approved, date: 2026-09-05, note: "runtime da §2 passa de Node 22 LTS para Node 26.x (ADR-002 §Revisões); ainda no bootstrap, sem código sob a decisão anterior" }
 ---
 
 # Constitution
@@ -29,7 +30,7 @@ Tudo o que estiver aqui é regra; o linter, os hooks e o agente devem cobrá-las
 
 | Camada | Decisão | ADR |
 |---|---|---|
-| Linguagem/runtime | TypeScript 5.x em modo `strict` sobre Node.js 22 LTS | ADR-002 |
+| Linguagem/runtime | TypeScript 5.x em modo `strict` sobre Node.js 26.x (sem garantia de LTS — ver ADR-002 §Revisões) | ADR-002 |
 | Framework | Next.js 15 (App Router), renderizado no servidor; Server Actions nos formulários | ADR-002 |
 | Persistência | SQLite (`better-sqlite3`) com Drizzle ORM; migrações SQL por `drizzle-kit` | ADR-002 |
 | Testes / lint | Vitest contra SQLite em memória; Biome (lint + format); `dependency-cruiser` nas fronteiras | ADR-002 |
@@ -85,3 +86,4 @@ entrega a semente DS-00 (arquitetura/fronteiras), DS-06 (testes) e DS-07 (nomes)
 ## Changelog
 - 1.0.0 (2026-09-05): versão inicial (§1–§13 + §14 Design System).
 - 1.1.0 (2026-09-05): §2 preenchida pela primeira vez — stack TypeScript/Next.js/SQLite+Drizzle/Vitest+Biome (ADR-002, aceito no G2).
+- 1.2.0 (2026-09-05): runtime da §2 passa de Node 22 LTS para Node 26.x, por indisponibilidade do 22 na máquina e escolha do dono do produto. Tratado como `minor` por ocorrer ainda no bootstrap, sem código escrito sob a linha anterior; troca posterior a esta segue exigindo ADR-v2 e bump `major`.
