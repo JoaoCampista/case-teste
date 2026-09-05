@@ -19,6 +19,30 @@
       "status": "approved"
     },
     {
+      "id": "PLAN-F-SETUP-V1",
+      "path": ".specs/features/F-SETUP-V1/plan.md",
+      "kind": "plan",
+      "status": "in_review"
+    },
+    {
+      "id": "RISK-F-SETUP-V1",
+      "path": ".specs/features/F-SETUP-V1/risks.md",
+      "kind": "risks",
+      "status": "in_review"
+    },
+    {
+      "id": "F-SETUP-V1",
+      "path": ".specs/features/F-SETUP-V1/spec.md",
+      "kind": "feature_spec",
+      "status": "in_review"
+    },
+    {
+      "id": "TASKS-F-SETUP-V1",
+      "path": ".specs/features/F-SETUP-V1/tasks.md",
+      "kind": "tasks",
+      "status": "in_review"
+    },
+    {
       "id": "PROD-001",
       "path": ".specs/product/product-spec.md",
       "kind": "product_spec",
@@ -29,7 +53,11 @@
     "ADR-001": "d9be61f94cbd2fcf121cc518fbae82e04db690c054343729cc450fe94d58bea1",
     "ADR-002": "72c67c5154053bdfae0c82b2dd35cd5721ed3fe99e015dfb2698a88c2b10e621",
     "CONST-001": "4f0760646f5f6c5ba86af5b72ce743a19175ecdd000537a6986e6402c61e3897",
+    "PLAN-F-SETUP-V1": "4d6a6cb636f5eeda96df253afec7aff90656d4df3b9cc2c51078ffcc38f13e52",
+    "RISK-F-SETUP-V1": "b316bea29343153dbc7f1816f8d2bad3e88b2c3b4b6f0b99611711d6d6d2dd30",
+    "F-SETUP-V1": "d5bba887c00ac33f824d3a982e1ecb9922f0f340328e50f5eabace3af2db071a",
+    "TASKS-F-SETUP-V1": "bba2282430143878ae90cfb9f32bc7e724aedecae3ad78c7aecbb8cf92859bc9",
     "PROD-001": "d10136b017faf6aecd16ff33e51dabe3fec56e0b41a8d60302330122aef3143b"
   },
-  "generated_at": "2026-09-05T16:18:11Z"
+  "generated_at": "2026-09-05T16:24:54Z"
 }
