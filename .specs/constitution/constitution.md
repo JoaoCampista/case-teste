@@ -3,12 +3,13 @@ id: CONST-001
 kind: constitution
 title: Constitution — camada de governança computável
 parent: none
-version: 1.0.0
+version: 1.1.0
 status: approved
 owners: [ceia]
 last_updated: 2026-09-05
 status_history:
   - { version: 1.0.0, status: approved, date: 2026-09-05, note: "adoção do método SDD (ADR-001); stack a definir no bootstrap" }
+  - { version: 1.1.0, status: approved, date: 2026-09-05, note: "primeiro preenchimento de §2 (stack canônica) via ADR-002, aceito no gate G2" }
 ---
 
 # Constitution
@@ -28,10 +29,15 @@ Tudo o que estiver aqui é regra; o linter, os hooks e o agente devem cobrá-las
 
 | Camada | Decisão | ADR |
 |---|---|---|
-| Linguagem/runtime | a definir no bootstrap | ADR-002 (pendente) |
-| Framework | a definir no bootstrap | ADR-002 (pendente) |
-| Persistência | a definir no bootstrap | ADR-002 (pendente) |
-| Testes / lint | a definir no bootstrap | ADR-002 (pendente) |
+| Linguagem/runtime | TypeScript 5.x em modo `strict` sobre Node.js 22 LTS | ADR-002 |
+| Framework | Next.js 15 (App Router), renderizado no servidor; Server Actions nos formulários | ADR-002 |
+| Persistência | SQLite (`better-sqlite3`) com Drizzle ORM; migrações SQL por `drizzle-kit` | ADR-002 |
+| Testes / lint | Vitest contra SQLite em memória; Biome (lint + format); `dependency-cruiser` nas fronteiras | ADR-002 |
+
+Camadas e regra de dependência fixadas pelo ADR-002 e detalhadas em DS-00: `core/` (domínio em
+funções puras, sem `import` de Next, React ou banco) · `storage/` (esquema e consultas, banco
+recebido por parâmetro) · `app/` (rotas, páginas, Server Actions — camada fina). `core` não importa
+`app` nem `storage`.
 
 Preencher esta tabela pela primeira vez (ADR-002, no bootstrap) é bump `minor` (1.0.0 → 1.1.0), aprovado no gate G2. Trocar uma linha depois disso exige ADR-v2 (`supersedes`) e bump `major`.
 
@@ -78,3 +84,4 @@ entrega a semente DS-00 (arquitetura/fronteiras), DS-06 (testes) e DS-07 (nomes)
 
 ## Changelog
 - 1.0.0 (2026-09-05): versão inicial (§1–§13 + §14 Design System).
+- 1.1.0 (2026-09-05): §2 preenchida pela primeira vez — stack TypeScript/Next.js/SQLite+Drizzle/Vitest+Biome (ADR-002, aceito no G2).

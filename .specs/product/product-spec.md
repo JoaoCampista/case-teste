@@ -3,8 +3,9 @@ id: PROD-001
 kind: product_spec
 title: Plataforma de adoção de gatos e cachorros
 parent: CONST-001
-version: 0.1.0
+version: 0.2.0
 status: in_review
+related_adrs: [ADR-002]
 risk_tier: limited
 owners: [ceia]
 last_updated: 2026-09-05
@@ -13,6 +14,7 @@ status_history:
   - { version: 0.0.1, status: draft, date: 2026-09-05, note: "esqueleto; preenchido no Playbook Bootstrap a partir do case" }
   - { version: 0.1.0, status: draft, date: 2026-09-05, note: "case recebido: plataforma de adoção com login simples e cadastro de animais; aguardando G0" }
   - { version: 0.1.0, status: in_review, date: 2026-09-05, note: "G0 aprovado pelo humano; segue para ADR-002 (stack)" }
+  - { version: 0.2.0, status: in_review, date: 2026-09-05, note: "§5 arquitetura preenchida após aceite do ADR-002 (stack TypeScript)" }
 ---
 
 # PROD-001 — Plataforma de adoção de gatos e cachorros
@@ -64,17 +66,27 @@ Não há papel de administrador/moderador na V1 (ver §8).
 
 ## 5. Arquitetura (visão)
 
-A definir em **ADR-002 — stack do projeto** (próximo passo do bootstrap, gate G2). O que o produto
-já impõe à decisão, independentemente da stack escolhida:
+Decidida em **ADR-002** (aceito no gate G2) e fixada na tabela §2 da Constitution: TypeScript de
+ponta a ponta sobre Node 22, Next.js 15 (App Router) renderizando no servidor, SQLite com Drizzle
+ORM, Vitest e Biome.
 
-- Aplicação web servida com páginas públicas indexáveis (o mural é o canal de descoberta).
-- Persistência com duas entidades no núcleo: **Usuário** (identidade + credencial) e **Animal**
-  (ficha, com `responsavel_id` e `status`).
-- Sessão simples baseada em e-mail + senha com hash — sem provedor OAuth externo na V1.
-- **Sem armazenamento de binários**: fotos entram como URL de imagem externa (decidido no case),
-  o que remove bucket, upload multipart e servidor de estáticos do escopo da V1.
-- Testes herméticos, sem rede e sem banco real (Constitution): a persistência precisa ter
-  substituto em memória ou fixture.
+O que o produto impõe à arquitetura, e que o ADR-002 atende:
+
+- **Páginas públicas renderizadas no servidor**, porque o mural é o canal de descoberta e precisa
+  ser indexável.
+- **Três camadas com fronteira executável:** `core/` (domínio em funções puras, sem framework),
+  `storage/` (esquema e consultas, banco injetado), `app/` (rotas, páginas e Server Actions —
+  camada fina). `core` não importa `app` nem `storage`; o contrato roda no CI.
+- **Duas entidades no núcleo:** **Usuário** (identidade e credencial) e **Animal** (ficha, com
+  `responsavel_id` e `status`), mais uma tabela de **sessão**.
+- **Login próprio** com e-mail e senha (`scrypt`), sessão no banco referenciada por cookie
+  `HttpOnly` — sem provedor externo na V1.
+- **Sem armazenamento de binários**: fotos entram como URL de imagem externa, o que remove bucket,
+  upload e servidor de estáticos do escopo.
+- **Testes herméticos** sem rede e sem banco real: as regras de negócio são testadas em `core/` por
+  chamada direta, e a persistência contra SQLite em memória.
+- **Piloto em processo único** (contêiner ou VM), não serverless — consequência de SQLite em
+  arquivo, registrada no ADR-002.
 
 ## 6. Métricas norte (instrumentadas vs aspiracionais)
 

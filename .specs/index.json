@@ -7,6 +7,12 @@
       "status": "accepted"
     },
     {
+      "id": "ADR-002",
+      "path": ".specs/adr/ADR-002-stack-do-projeto.md",
+      "kind": "adr",
+      "status": "accepted"
+    },
+    {
       "id": "CONST-001",
       "path": ".specs/constitution/constitution.md",
       "kind": "constitution",
@@ -21,8 +27,9 @@
   ],
   "hashes": {
     "ADR-001": "d9be61f94cbd2fcf121cc518fbae82e04db690c054343729cc450fe94d58bea1",
-    "CONST-001": "7a69c18a95d268a78fc3da71e1ddc505f7fa3c70875e24d95c1fb1866a37fe76",
-    "PROD-001": "fa30e43508c716d9978494e6c664baf0b86e66d54f386db5fb70e14ebb8e0af5"
+    "ADR-002": "72c67c5154053bdfae0c82b2dd35cd5721ed3fe99e015dfb2698a88c2b10e621",
+    "CONST-001": "4f0760646f5f6c5ba86af5b72ce743a19175ecdd000537a6986e6402c61e3897",
+    "PROD-001": "d10136b017faf6aecd16ff33e51dabe3fec56e0b41a8d60302330122aef3143b"
   },
-  "generated_at": "2026-09-05T16:09:55Z"
+  "generated_at": "2026-09-05T16:18:11Z"
 }
